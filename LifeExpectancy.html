@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Expectancy Visualizer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        input, button {
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .circle {
+            width: 20px;
+            height: 20px;
+            margin: 3px;
+            display: inline-block;
+            border-radius: 50%;
+        }
+        .red {
+            background-color: red;
+        }
+        .green {
+            background-color: green;
+        }
+        .amber {
+            background-color: orange;
+        }
+        .row {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Life Expectancy Visualizer</h1>
+	<p>Life expectancy is assumed to be 78 years.</p>
+	<p>Optimal years are assumed to be 65 years (retirement age).</p>
+<hr>
+<p>Visualization:</p>
+<p>Red circles: Years that have already passed.</p>
+<p>Green circles: Optimal working/active years.</p>
+<p>Amber circles: Senior years.</p>
+<hr>
+
+    <p>Enter your date of birth to visualize your life expectancy:</p>
+    <input type="date" id="dob">
+    <button onclick="renderCircles()">Submit</button>
+    <div id="output" class="container"></div>
+
+    <script>
+        function renderCircles() {
+            const dobInput = document.getElementById('dob').value;
+            if (!dobInput) {
+                alert('Please enter a valid date of birth.');
+                return;
+            }
+
+            const dob = new Date(dobInput);
+            const today = new Date();
+            const lifeExpectancy = 78; // Assume an average life expectancy of 78 years
+            const optimalYears = 65; // Optimal years till retirement age
+
+            const yearsPassed = today.getFullYear() - dob.getFullYear();
+            const circlesContainer = document.getElementById('output');
+            circlesContainer.innerHTML = ''; // Clear previous results
+
+            let rowDiv;
+
+            for (let i = 1; i <= lifeExpectancy; i++) {
+                if ((i - 1) % 10 === 0) {
+                    // Create a new row for every 10 circles
+                    rowDiv = document.createElement('div');
+                    rowDiv.classList.add('row');
+                    circlesContainer.appendChild(rowDiv);
+                }
+
+                const circle = document.createElement('div');
+                circle.classList.add('circle');
+
+                if (i <= yearsPassed) {
+                    circle.classList.add('red');
+                } else if (i <= optimalYears) {
+                    circle.classList.add('green');
+                } else {
+                    circle.classList.add('amber');
+                }
+
+                rowDiv.appendChild(circle);
+            }
+        }
+    </script>
+</body>
+</html>
